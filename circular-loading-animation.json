@@ -1,0 +1,440 @@
+{
+    "type": "APL",
+    "version": "1.4",
+    "theme": "dark",
+    "import": [
+        {
+            "name": "alexa-layouts",
+            "version": "1.2.0"
+        }
+    ],
+    "resources": [
+        {
+            "dimension": {
+                "circleRowHeight": "16%",
+                "circleRowWidth": "100%",
+                "circleContainerHeight": "100%"
+            }
+        }
+    ],
+    "layouts": {
+        "Circle": {
+            "parameters": [
+                "initialIndex"
+            ],
+            "items": [
+                {
+                    "type": "Frame",
+                    "width": "100%",
+                    "height": "100%",
+                    "onMount": [
+                        {
+                            "type": "Sequential",
+                            "repeatCount": 10000000,
+                            "sequencer": "animate-${initialIndex}",
+                            "commands": [
+                                {
+                                    "type": "Select",
+                                    "commands": [
+                                        {
+                                            "when": "${animateIndex + 1 < numberOfCircles}",
+                                            "type": "SetValue",
+                                            "property": "animateIndex",
+                                            "value": "${animateIndex + 1}"
+                                        },
+                                        {
+                                            "when": "${animateIndex + 1 => numberOfCircles}",
+                                            "type": "SetValue",
+                                            "property": "animateIndex",
+                                            "value": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Idle",
+                                    "delay": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "bind": [
+                        {
+                            "name": "animateIndex",
+                            "value": "${initialIndex}"
+                        },
+                        {
+                            "name": "ratio",
+                            "value": "${1.0 / numberOfCircles * animateIndex}"
+                        }
+                    ],
+                    "opacity": "${ratio}",
+                    "backgroundColor": "${circleColor ? circleColor : defaultCircleColor}",
+                    "borderRadius": "64"
+                }
+            ]
+        },
+        "Filler": {
+            "parameters": [
+                "fillerWidth",
+                "fillerHeight"
+            ],
+            "items": [
+                {
+                    "type": "Container",
+                    "display": "invisible",
+                    "width": "${fillerWidth ? fillerWidth : '100%'}",
+                    "height": "${fillerHeight ? fillerHeight : '100%'}"
+                }
+            ]
+        },
+        "TopCircleRow": {
+            "items": [
+                {
+                    "type": "Container",
+                    "width": "@circleRowWidth",
+                    "height": "@circleRowHeight",
+                    "alignItems": "center",
+                    "items": [
+                        {
+                            "type": "Container",
+                            "width": "16%",
+                            "height": "@circleContainerHeight",
+                            "item": {
+                                "type": "Circle",
+                                "initialIndex": 0
+                            }
+                        }
+                    ],
+                    "position": "absolute"
+                }
+            ]
+        },
+        "BottomCircleRow": {
+            "items": [
+                {
+                    "type": "Container",
+                    "width": "@circleRowWidth",
+                    "height": "@circleRowHeight",
+                    "alignItems": "center",
+                    "items": [
+                        {
+                            "type": "Container",
+                            "width": "16%",
+                            "height": "@circleContainerHeight",
+                            "item": {
+                                "type": "Circle",
+                                "initialIndex": 6
+                            }
+                        }
+                    ],
+                    "justifyContent": "center",
+                    "position": "absolute",
+                    "bottom": "7%"
+                }
+            ]
+        },
+        "LoadingCircle": {
+            "parameters": ["size", "circleColor"],
+            "items": [{
+                        "type": "Container",
+                        "bind": [
+                            {
+                                "name": "numberOfCircles",
+                                "value": 12
+                            },
+                            {
+                                "name": "defaultSize",
+                                "value": 200
+                            },
+                            {
+                                "name": "defaultCircleColor",
+                                "value": "white"
+                            }
+                        ],
+                        "width": "${size ? size : defaultSize}",
+                        "height": "${size ? size : defaultSize}",
+                        "items": [
+                            {
+                                "type": "TopCircleRow"
+                            },
+                            {
+                                "type": "Filler",
+                                "fillerHeight": "7%"
+                            },
+                            {
+                                "type": "Container",
+                                "width": "@circleRowWidth",
+                                "height": "@circleRowHeight",
+                                "direction": "row",
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Filler",
+                                                "fillerWidth": "45%"
+                                            },
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "@circleContainerHeight",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 1
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "@circleContainerHeight",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 11
+                                                }
+                                            },
+                                            {
+                                                "type": "Filler",
+                                                "fillerWidth": "45%"
+                                            }
+                                        ],
+                                        "justifyContent": "end"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Container",
+                                "width": "@circleRowWidth",
+                                "height": "@circleRowHeight",
+                                "direction": "row",
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Filler",
+                                                "fillerWidth": "16%"
+                                            },
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "@circleContainerHeight",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 2
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "@circleContainerHeight",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 10
+                                                }
+                                            },
+                                            {
+                                                "type": "Filler",
+                                                "fillerWidth": "16%"
+                                            }
+                                        ],
+                                        "justifyContent": "end"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Container",
+                                "width": "@circleRowWidth",
+                                "height": "@circleRowHeight",
+                                "direction": "row",
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "@circleContainerHeight",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 3
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "100%",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 9
+                                                }
+                                            }
+                                        ],
+                                        "justifyContent": "end"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Container",
+                                "width": "@circleRowWidth",
+                                "height": "@circleRowHeight",
+                                "direction": "row",
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Filler",
+                                                "fillerWidth": "16%"
+                                            },
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "@circleContainerHeight",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 4
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "@circleContainerHeight",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 8
+                                                }
+                                            },
+                                            {
+                                                "type": "Filler",
+                                                "fillerWidth": "16%"
+                                            }
+                                        ],
+                                        "justifyContent": "end"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Container",
+                                "width": "@circleRowWidth",
+                                "height": "@circleRowHeight",
+                                "direction": "row",
+                                "items": [
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Filler",
+                                                "fillerWidth": "45%"
+                                            },
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "@circleContainerHeight",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 5
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "width": "50%",
+                                        "height": "100%",
+                                        "direction": "row",
+                                        "items": [
+                                            {
+                                                "type": "Container",
+                                                "width": "32%",
+                                                "height": "@circleContainerHeight",
+                                                "item": {
+                                                    "type": "Circle",
+                                                    "initialIndex": 7
+                                                }
+                                            },
+                                            {
+                                                "type": "Filler",
+                                                "fillerWidth": "45%"
+                                            }
+                                        ],
+                                        "justifyContent": "end"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "BottomCircleRow"
+                            }
+                        ]
+                    }
+                ]
+        }
+    },
+    "mainTemplate": {
+        "parameters": [
+            "payload"
+        ],
+        "items": [
+            {
+                "type": "Container",
+                "width": "100%",
+                "height": "100%",
+                "items": [
+                    {
+                        "type": "LoadingCircle",
+                        "size": 200,
+                        "circleColor": "lightblue"
+                    }
+                ],
+                "alignItems": "center",
+                "justifyContent": "center"
+            }
+        ]
+    }
+}
