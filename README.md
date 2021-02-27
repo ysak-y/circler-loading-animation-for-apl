@@ -16,4 +16,4 @@ Copy and paste json in circular-loading-animation.json excludes `mainTemplate`. 
 
 ## Link
 
-https://apl.ninja/yoshiaki/QTQyhHKE
+https://apl.ninja/yoshiaki/ZngzOvcL
